@@ -23,6 +23,7 @@ from .utilities.geometry_default import ConeGeometryDefault as geometry_default
 from .utilities.geometry_default import FanGeometryDefault as fan_geometry_default
 from .utilities.Ax import Ax
 from .utilities.Atb import Atb
+from .utilities.Atb_multi_channel import Atb_multi_channel
 from .utilities.visualization.plotproj import plotproj, plotProj, plotSinogram
 from .utilities.visualization.plotimg import plotimg, plotImg
 from .utilities.visualization.plot_geometry import plot_geometry
