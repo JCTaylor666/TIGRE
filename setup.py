@@ -408,6 +408,32 @@ Atb_ext = Extension(
 )
 
 
+multi_channel_atb_ext = Extension(
+    "_multi_channel_atb",
+    sources=include_headers(
+        [
+            "Common/CUDA/TIGRE_common.cpp",
+            "Common/CUDA/GpuIds.cpp",
+            "Common/CUDA/gpuUtils.cu",
+            "CustomOperators/multi_channel_backprojection/multi_channel_backprojection.cu",
+            "Python/tigre/utilities/cuda_interface/_multi_channel_atb.pyx",
+        ],
+        sdist=sys.argv[1] == "sdist",
+    ),
+    define_macros=define_macros,
+    library_dirs=[CUDA["lib64"]],
+    libraries=["cudart"],
+    language="c++",
+    runtime_library_dirs=[CUDA["lib64"]] if not IS_WINDOWS else None,
+    include_dirs=[
+        NUMPY_INCLUDE,
+        CUDA["include"],
+        "Common/CUDA/",
+        "CustomOperators/multi_channel_backprojection",
+    ],
+)
+
+
 tv_proximal_ext = Extension(
     "_tv_proximal",
     sources=include_headers(
@@ -513,7 +539,16 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     data_files=[("data", ["Common/data/head.mat"])],
-    ext_modules=[Ax_ext, Atb_ext, tv_proximal_ext, minTV_ext, AwminTV_ext, gpuUtils_ext, RandomNumberGenerator_ext],
+    ext_modules=[
+        Ax_ext,
+        Atb_ext,
+        multi_channel_atb_ext,
+        tv_proximal_ext,
+        minTV_ext,
+        AwminTV_ext,
+        gpuUtils_ext,
+        RandomNumberGenerator_ext,
+    ],
     py_modules=["tigre.py"],
     cmdclass={"build_ext": BuildExtension},
     # since the package has c code, the egg cannot be zipped
